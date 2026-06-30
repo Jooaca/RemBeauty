@@ -1,0 +1,53 @@
+JOAQUINA GARCÍA 328874
+
+Documentación del Proyecto: r.e.m. beauty 
+
+1. Descripción General del Proyecto
+
+Este proyecto consiste en el desarrollo de una Single Page Application (SPA) en React inspirada en la marca de cosméticos r.e.m. beauty de Ariana Grande.
+
+En esta segunda etapa del obligatorio, el proyecto pasó de ser una maqueta hecha en React a una aplicación mucho más completa y funcional. Se conectó con la API proporcionada por el profe para poder trabajar con usuarios, productos, carrito y compras, haciendo que toda la información se guarde y se obtenga directamente desde el servidor.
+
+También se agregaron varias funcionalidades nuevas, como el inicio de sesión con Token JWT, rutas protegidas para que solo los usuarios logueados puedan acceder a ciertas pantallas, validaciones en los formularios y un mapa interactivo para mostrar dónde están las tiendas de la marca.
+
+2. Explicación de Pantallas y Componentes Principales
+
+La aplicación está dividida en distintas pantallas y componentes, cada uno con una función específica.
+
+Pantallas Públicas
+Login (Login.jsx): Es la pantalla donde el usuario inicia sesión ingresando su correo y contraseña. Antes de enviar el formulario se validan los datos para evitar errores. Si el login es correcto, la API devuelve un Token JWT junto con la información del usuario, que se guarda para mantener la sesión iniciada y permitir el acceso a las pantallas privadas.
+Registro (Register.jsx): Permite crear una cuenta nueva completando un formulario. Si el registro sale bien, el usuario inicia sesión automáticamente y es redirigido al Home, sin tener que volver a ingresar sus datos.
+404 Not Found (NotFound.jsx): Esta pantalla aparece cuando el usuario intenta entrar a una ruta que no existe. En lugar de mostrar el típico error del navegador, se muestra una página personalizada con un mensaje y un botón para volver al inicio.
+
+Pantallas Protegidas (Requieren Login)
+Home (Home.jsx): Es la pantalla principal de la aplicación. Tiene un banner de bienvenida, una sección de productos destacados ("Best Sellers & Shop") que obtiene la información desde la API y permite filtrarlos por categoría (Eyes, Lip y Face), además de agregarlos al carrito. También incluye un mapa interactivo con la ubicación de las tiendas oficiales de la marca.
+Tienda (Shop.jsx): Muestra todo el catálogo de productos obtenido desde la API. Los usuarios pueden filtrar los cosméticos por categoría y agregarlos al carrito.
+Carrito (Cart.jsx): Muestra todos los productos agregados por el usuario. Desde esta pantalla se puede aumentar o disminuir la cantidad de cada producto, eliminarlos del carrito y ver el cálculo automático del subtotal, el costo de envío (gratis para compras mayores a USD 50) y el total.
+Checkout (Checkout.jsx): Es la pantalla donde se finaliza la compra. El usuario completa un formulario con sus datos y, si toda la información es válida, la compra se envía a la API y el carrito se vacía automáticamente.
+Perfil (Profile.jsx): Muestra la información del usuario que inició sesión y su historial de compras. Cada compra puede desplegarse para ver detalles como la fecha, los productos comprados, las cantidades y el total.
+3. Endpoints Utilizados de la API
+
+Para el funcionamiento de la aplicación se utilizaron los siguientes endpoints de la API proporcionada por el profe:
+
+POST /auth/register: Registra un nuevo usuario y devuelve sus datos junto con el Token JWT.
+POST /auth/login: Valida las credenciales e inicia sesión.
+GET /api/productos: Obtiene el catálogo completo de productos.
+POST /api/compras: Guarda una nueva compra realizada por el usuario.
+GET /api/compras: Obtiene el historial de compras del usuario que inició sesión.
+4. Decisiones de Diseño y Desarrollo
+Uso de la API y LocalStorage: La información permanente, como usuarios, productos y compras, se guarda en la API. En cambio, localStorage se utiliza únicamente para mantener la sesión iniciada y guardar el carrito mientras el usuario navega. Cuando la compra se completa, el carrito se elimina automáticamente.
+Navbar fija: Se implementó una barra de navegación fija con un efecto de transparencia y desenfoque para que siempre permanezca visible sin perder legibilidad.
+Notificaciones: Cada vez que un producto se agrega al carrito aparece un pequeño mensaje (Toast) durante unos segundos para avisarle al usuario que la acción se realizó correctamente.
+Mapeo de productos: Como los datos que devuelve la API tienen una estructura diferente a la que necesitaba la interfaz, se transforman apenas llegan para simplificar el trabajo en los componentes.
+Mapa interactivo: Se utilizó Leaflet para mostrar las tiendas oficiales de la marca. Los marcadores fueron personalizados para que mantuvieran la estética lila de la aplicación.
+5. Problemas Encontrados y Soluciones
+
+Paso de información entre rutas: Al principio las rutas protegidas no compartían correctamente la información del carrito y otras variables con sus componentes hijos.
+
+Solución: Se modificó ProtectedRoute.jsx utilizando useOutletContext() para compartir correctamente esos datos entre las distintas pantallas.
+
+Demora en la primera conexión con la API: Como la API está alojada en el plan gratuito de Render, luego de un tiempo sin uso tarda algunos segundos en volver a responder.
+
+Solución: Se agregó manejo de errores y mensajes claros para que el usuario sepa que puede volver a intentarlo unos segundos después.
+
+Organización del proyecto: Se reorganizó App.jsx para que únicamente se encargue de definir las rutas de la aplicación, eliminando el código de ejemplo que venía por defecto con Vite.
