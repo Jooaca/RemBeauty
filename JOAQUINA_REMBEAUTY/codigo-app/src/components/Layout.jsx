@@ -29,12 +29,12 @@ export const Layout = () => {
   const [purchases, setPurchases] = useState([]);
   const [toast, setToast] = useState(null);
 
-  // Persist cart changes
+  
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  // Fetch purchases when token is set
+  
   const fetchPurchases = async () => {
     if (!token) return;
     try {
@@ -63,7 +63,7 @@ export const Layout = () => {
     }
   }, [token]);
 
-  // Auto-hide toast
+  
   useEffect(() => {
     if (toast) {
       const timer = setTimeout(() => setToast(null), 3000);
@@ -119,7 +119,7 @@ export const Layout = () => {
       </div>
       <Footer />
 
-      {/* Toast Notification */}
+      {/* Notification del toast */}
       {toast && (
         <div style={{
           position: "fixed",
